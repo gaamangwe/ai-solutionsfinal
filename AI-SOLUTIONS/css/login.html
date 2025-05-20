@@ -1,0 +1,352 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Admin Login | AI-Solutions</title>
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"
+    />
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        min-height: 100vh;
+        margin: 0;
+        padding: 2rem;
+        background-color: #f0f8ff;
+      }
+      .login-box {
+        width: 100%;
+        max-width: 400px;
+        padding: 2rem;
+        background: white;
+        border-radius: 10px;
+        box-shadow: 0 4px 12px rgba(0, 0, 128, 0.1);
+      }
+      .logo {
+        display: block;
+        margin: 0 auto 1.5rem;
+        width: 150px;
+      }
+      h2 {
+        color: #003366;
+        text-align: center;
+        margin-bottom: 1.5rem;
+      }
+      input {
+        width: 100%;
+        padding: 12px;
+        margin: 0.75rem 0;
+        border: 1px solid #ddd;
+        border-radius: 6px;
+        font-size: 16px;
+        box-sizing: border-box;
+      }
+      button {
+        width: 100%;
+        padding: 12px;
+        margin: 1rem 0;
+        background-color: #004080;
+        color: white;
+        border: none;
+        border-radius: 6px;
+        font-size: 16px;
+        font-weight: bold;
+        cursor: pointer;
+        transition: background-color 0.3s;
+      }
+      button:hover {
+        background-color: #002b57;
+      }
+      #message {
+        margin: 1rem 0;
+        text-align: center;
+        min-height: 20px;
+      }
+      .error {
+        color: #d32f2f;
+      }
+      .success {
+        color: #388e3c;
+      }
+      .forgot-password {
+        text-align: right;
+        margin: 0.5rem 0;
+      }
+      .forgot-password a {
+        color: #004080;
+        text-decoration: none;
+        font-size: 14px;
+      }
+      .forgot-password a:hover {
+        text-decoration: underline;
+      }
+      .password-container {
+        position: relative;
+      }
+      .toggle-password {
+        position: absolute;
+        right: 10px;
+        top: 50%;
+        transform: translateY(-50%);
+        cursor: pointer;
+        color: #666;
+      }
+      /* Modal styles */
+      .modal {
+        display: none;
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-color: rgba(0, 0, 0, 0.5);
+        z-index: 1000;
+        justify-content: center;
+        align-items: center;
+      }
+      .modal-content {
+        background: white;
+        padding: 2rem;
+        border-radius: 10px;
+        width: 90%;
+        max-width: 400px;
+        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+      }
+      .close-modal {
+        float: right;
+        font-size: 1.5rem;
+        cursor: pointer;
+      }
+      @media (max-width: 480px) {
+        .login-box {
+          padding: 1.5rem;
+        }
+        input,
+        button {
+          padding: 10px;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="login-box">
+      <img
+        src="/images/AI-SOLUTIONS LOGO.png"
+        alt="AI-Solutions Logo"
+        class="logo"
+      />
+      <h2>Admin Login</h2>
+      <form id="login-form">
+        <input
+          type="email"
+          id="email"
+          placeholder="Admin Email"
+          required
+          autocomplete="username"
+        />
+        <div class="password-container">
+          <input
+            type="password"
+            id="password"
+            placeholder="Password"
+            required
+            autocomplete="current-password"
+          />
+          <i
+            class="toggle-password fas fa-eye"
+            onclick="togglePasswordVisibility()"
+          ></i>
+        </div>
+        <div class="forgot-password">
+          <a href="#" id="forgot-password-link">Forgot password?</a>
+        </div>
+        <button type="submit">Login</button>
+        <p id="message"></p>
+      </form>
+    </div>
+
+    <!-- Password Reset Modal -->
+    <div id="reset-modal" class="modal">
+      <div class="modal-content">
+        <span class="close-modal" onclick="closeModal()">&times;</span>
+        <h2>Reset Password</h2>
+        <p>Enter your admin email to receive a password reset link:</p>
+        <input
+          type="email"
+          id="reset-email"
+          placeholder="Admin Email"
+          autocomplete="email"
+        />
+        <button id="send-reset-link">Send Reset Link</button>
+        <p id="reset-message"></p>
+      </div>
+    </div>
+
+    <!-- Firebase SDK -->
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-auth.js"></script>
+
+    <script>
+      // Initialize Firebase
+      const firebaseConfig = {
+        apiKey: "AIzaSyAtjeL9bPG4jb3mIhjvBiJJoR1PhJgtx0I",
+        authDomain: "ai-solutions-981f1.firebaseapp.com",
+        databaseURL: "https://ai-solutions-981f1-default-rtdb.firebaseio.com",
+        projectId: "ai-solutions-981f1",
+        storageBucket: "ai-solutions-981f1.firebasestorage.app",
+        messagingSenderId: "501089774980",
+        appId: "1:501089774980:web:0bfef808f9ba6ec04641d1",
+        measurementId: "G-K8C7956N0B",
+      };
+      firebase.initializeApp(firebaseConfig);
+      const auth = firebase.auth();
+
+      // DOM Elements
+      const loginForm = document.getElementById("login-form");
+      const messageEl = document.getElementById("message");
+      const forgotPasswordLink = document.getElementById(
+        "forgot-password-link"
+      );
+      const resetModal = document.getElementById("reset-modal");
+      const resetEmail = document.getElementById("reset-email");
+      const sendResetLink = document.getElementById("send-reset-link");
+      const resetMessage = document.getElementById("reset-message");
+
+      // Toggle password visibility
+      function togglePasswordVisibility() {
+        const password = document.getElementById("password");
+        const icon = document.querySelector(".toggle-password");
+        if (password.type === "password") {
+          password.type = "text";
+          icon.classList.replace("fa-eye", "fa-eye-slash");
+        } else {
+          password.type = "password";
+          icon.classList.replace("fa-eye-slash", "fa-eye");
+        }
+      }
+
+      // Modal functions
+      function openModal() {
+        resetModal.style.display = "flex";
+        resetEmail.value = document.getElementById("email").value || "";
+      }
+
+      function closeModal() {
+        resetModal.style.display = "none";
+        resetMessage.textContent = "";
+      }
+
+      // Handle login
+      loginForm.addEventListener("submit", function (e) {
+        e.preventDefault();
+        messageEl.textContent = "";
+        messageEl.className = "";
+
+        const email = document.getElementById("email").value.trim();
+        const password = document.getElementById("password").value.trim();
+
+        if (!email || !password) {
+          showMessage("Please fill in all fields.", "error");
+          return;
+        }
+
+        auth
+          .signInWithEmailAndPassword(email, password)
+          .then((userCredential) => {
+            const user = userCredential.user;
+            if (user.email === "admin@ai-solutions.com") {
+              showMessage("Login successful. Redirecting...", "success");
+              setTimeout(() => {
+                window.location.href = "dashboard.html";
+              }, 1000);
+            } else {
+              auth.signOut();
+              showMessage(
+                "Error: Only admin accounts can access this portal.",
+                "error"
+              );
+            }
+          })
+          .catch((error) => {
+            let errorMessage = "Login failed. Please try again.";
+            switch (error.code) {
+              case "auth/user-not-found":
+                errorMessage = "No admin account found with this email.";
+                break;
+              case "auth/wrong-password":
+                errorMessage =
+                  "Incorrect password. Try again or reset your password.";
+                break;
+              case "auth/too-many-requests":
+                errorMessage =
+                  "Account temporarily locked due to too many failed attempts.";
+                break;
+            }
+            showMessage(errorMessage, "error");
+          });
+      });
+
+      // Forgot password flow
+      forgotPasswordLink.addEventListener("click", function (e) {
+        e.preventDefault();
+        openModal();
+      });
+
+      // Send password reset email
+      sendResetLink.addEventListener("click", function () {
+        const email = resetEmail.value.trim();
+        if (!email) {
+          resetMessage.textContent = "Please enter your email address.";
+          resetMessage.className = "error";
+          return;
+        }
+
+        if (email !== "admin@ai-solutions.com") {
+          resetMessage.textContent =
+            "Only admin accounts can reset password here.";
+          resetMessage.className = "error";
+          return;
+        }
+
+        auth
+          .sendPasswordResetEmail(email)
+          .then(() => {
+            resetMessage.textContent =
+              "Password reset email sent. Check your inbox (and spam folder).";
+            resetMessage.className = "success";
+            setTimeout(closeModal, 3000);
+          })
+          .catch((error) => {
+            let errorMessage = "Error sending reset link. Please try again.";
+            if (error.code === "auth/user-not-found") {
+              errorMessage = "No admin account found with this email.";
+            }
+            resetMessage.textContent = errorMessage;
+            resetMessage.className = "error";
+          });
+      });
+
+      // Helper function to show messages
+      function showMessage(message, type) {
+        messageEl.textContent = message;
+        messageEl.className = type;
+      }
+
+      // Close modal when clicking outside content
+      window.addEventListener("click", function (event) {
+        if (event.target === resetModal) {
+          closeModal();
+        }
+      });
+    </script>
+    <footer>
+      <p>&copy; 2025 AI Solutions | All rights reserved</p>
+    </footer>
+  </body>
+</html>

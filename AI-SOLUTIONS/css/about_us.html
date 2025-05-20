@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>About Us | AI-Solutions</title>
+    <link rel="stylesheet" href="/css/styles.css" />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap"
+      rel="stylesheet"
+    />
+   <style>
+
+
+  #company-info p {
+    margin-bottom: 1em;
+    text-align: center;
+  }
+
+  .values-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 1.5rem;
+    margin-top: 1em;
+    padding: 1rem;
+  }
+
+  .value-card {
+    background: lightblue;
+    padding: 1.5em 1em;
+    border-radius: 12px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    text-align: center;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    opacity: 0;
+    animation: fadeIn 1s forwards;
+  }
+
+  .value-card:hover {
+    transform: scale(1.05);
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+  }
+
+  .value-card:nth-child(1) {
+    animation-delay: 0.2s;
+  }
+  .value-card:nth-child(2) {
+    animation-delay: 0.4s;
+  }
+  .value-card:nth-child(3) {
+    animation-delay: 0.6s;
+  }
+  .value-card:nth-child(4) {
+    animation-delay: 0.8s;
+  }
+
+  @keyframes fadeIn {
+    from {
+      opacity: 0;
+      transform: translateY(20px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  .icon-img {
+    width: 70px;
+    height: 80px;
+    margin-bottom: 0.5em;
+  }
+
+  .team-section {
+    margin-top: 3em;
+  }
+
+  .team-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 2rem;
+  }
+
+  .team-member {
+    text-align: center;
+    background-color: lightblue;
+    padding: 1em;
+    border-radius: 10px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  }
+
+  .team-member img {
+    border-radius: 50%;
+    width: 150px;
+    height: 150px;
+    object-fit: cover;
+    margin-bottom: 1em;
+  }
+
+  .call-to-action {
+    text-align: center;
+    margin-top: 3em;
+    font-size: 1.2em;
+  }
+</style>
+  </head>
+  <body>
+    <header>
+      <div class="logo-container">
+        <img src="/images/AI-SOLUTIONS LOGO.png" alt="AI-Solutions Logo" />
+      </div>
+      <nav>
+        <ul>
+          <li><a href="index.html">Home</a></li>
+          <li><a href="about_us.html">About Us</a></li>
+          <li><a href="contact.html">Contact Us</a></li>
+          <li><a href="events.html">Events</a></li>
+          <li><a href="articles.html">Articles</a></li>
+          <li><a href="login.html">Admin Login</a></li>
+        </ul>
+      </nav>
+    </header>
+
+    <main>
+      <h1>About Us</h1>
+      <section id="company-info">
+        <p>
+          At AI-Solutions, we are dedicated to providing innovative AI-powered
+          solutions that enhance productivity and efficiency across industries.
+          Our mission is to create intelligent automation, predictive analytics,
+          and custom AI models to help businesses scale and optimize their
+          operations.
+        </p>
+
+        <h2>Our Core Values</h2>
+<div class="values-grid">
+  <div class="value-card">
+    <img src="/images/innovation.png" alt="Innovation Icon" class="icon-img" />
+    <h3>Innovation</h3>
+    <p>Pioneering solutions through forward-thinking AI technologies.</p>
+  </div>
+  <div class="value-card">
+    <img src="/images/concept.png" alt="Integrity Icon" class="icon-img" />
+    <h3>Integrity</h3>
+    <p>Transparency and trust in everything we do.</p>
+  </div>
+  <div class="value-card">
+    <img src="/images/motivation.png" alt="Customer Success Icon" class="icon-img" />
+    <h3>Customer Success</h3>
+    <p>Your success is our mission.</p>
+  </div>
+  <div class="value-card">
+    <img src="/images/collaboration.png" alt="Collaboration Icon" class="icon-img" />
+    <h3>Collaboration</h3>
+    <p>Working together to build smarter solutions.</p>
+  </div>
+</div>
+
+        </div>
+      </section>
+
+      <section class="team-section">
+        <h2>Meet Our Team</h2>
+        <div class="team-grid">
+          <div class="team-member">
+            <img src="/images/CEO.jpg" alt="Jane Doe" />
+            <h4>Miss Gaamangwe Motsamai</h4>
+            <p>CEO & Founder</p>
+          </div>
+          <div class="team-member">
+            <img src="/images/head2.jpg" alt="John Smith" />
+            <h4>Mr Hame Smith</h4>
+            <p>Head of AI Research</p>
+          </div>
+          <div class="team-member">
+            <img src="/images/head 3.jpg" alt="Lisa Ray" />
+            <h4> Mrs Lisa Ray</h4>
+            <p>Product Manager</p>
+          </div>
+        </div>
+      </section>
+
+      <section class="call-to-action">
+        <p>
+          Interested in collaborating with us?
+          <a href="contact.html">Reach out today!</a>
+        </p>
+      </section>
+    </main>
+
+    <footer>
+      <p>&copy; 2025 AI Solutions | All rights reserved</p>
+    </footer>
+  </body>
+</html>

@@ -1,0 +1,271 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"
+    />
+    <title>Contact Us</title>
+    <link rel="stylesheet" href="/css/styles.css" />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"
+      integrity="sha512-...your-integrity-code..."
+      crossorigin="anonymous"
+      referrerpolicy="no-referrer"
+    />
+    <style>
+      .toast {
+        position: fixed;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        background: navy;
+        color: white;
+        padding: 16px 24px;
+        border-radius: 10px;
+        box-shadow: 0 3px 12px rgba(0, 0, 0, 0.4);
+        display: none;
+        z-index: 9999;
+        animation: fadeInOut 5s ease-in-out;
+      }
+
+      @keyframes fadeInOut {
+        0% {
+          opacity: 0;
+          transform: translateY(30px);
+        }
+        10% {
+          opacity: 1;
+          transform: translateY(0);
+        }
+        90% {
+          opacity: 1;
+        }
+        100% {
+          opacity: 0;
+          transform: translateY(30px);
+        }
+      }
+
+      button[type="submit"] {
+        background-color: navy;
+        color: white;
+        border: none;
+        padding: 12px 18px;
+        border-radius: 6px;
+        font-size: 1rem;
+        cursor: pointer;
+        transition: background-color 0.3s;
+      }
+
+      button[type="submit"]:hover {
+        background-color: navy !important;
+      }
+    </style>
+  </head>
+  <body>
+    <header>
+      <div class="logo-container">
+        <img src="/images/AI-SOLUTIONS LOGO.png" alt="AI-Solutions Logo" />
+      </div>
+      <nav>
+        <ul>
+          <li><a href="index.html">Home</a></li>
+          <li><a href="about_us.html">About Us</a></li>
+          <li><a href="contact.html">Contact Us</a></li>
+          <li><a href="events.html">Events</a></li>
+          <li><a href="articles.html">Articles</a></li>
+          <li><a href="login.html">Admin Login</a></li>
+        </ul>
+      </nav>
+    </header>
+
+    <section class="contact-details">
+      <h2>Our Contact Information</h2>
+      <p>If you prefer, you can reach us through the following:</p>
+      <ul>
+        <li>
+          <strong>Email:</strong>
+          <a href="mailto:ai-solutions@gmail.com">ai-solutions@gmail.com</a>
+        </li>
+        <li><strong>Phone:</strong> + 267 75097397</li>
+        <li>
+          <strong>Address:</strong> P O Box 81 GABS Street, Gaborone, Botswana
+        </li>
+        <li><strong>Follow Us:</strong></li>
+        <div class="social-icons">
+          <a
+            href="https://facebook.com/yourcompany"
+            target="_blank"
+            class="social-btn facebook"
+            aria-label="Facebook"
+          >
+            <i class="fab fa-facebook-f"></i>
+          </a>
+          <a
+            href="https://instagram.com/yourcompany"
+            target="_blank"
+            class="social-btn instagram"
+            aria-label="Instagram"
+          >
+            <i class="fab fa-instagram"></i>
+          </a>
+        </div>
+      </ul>
+    </section>
+
+    <section class="inquiry-form">
+      <h2>Send Us Your Inquiry</h2>
+      <form id="inquiryForm">
+        <label for="inquiryName">Your Name</label>
+        <input
+          type="text"
+          id="inquiryName"
+          name="name"
+          placeholder="Your Name"
+          required
+        />
+        <label for="inquiryEmail">Your Email</label>
+        <input
+          type="email"
+          id="inquiryEmail"
+          name="email"
+          placeholder="Your Email"
+          required
+        />
+        <label for="inquiryCompany">Your Company</label>
+        <input
+          type="text"
+          id="inquiryCompany"
+          name="company"
+          placeholder="Your Company"
+        />
+        <label for="inquiryJob">Your Job Title</label>
+        <input
+          type="text"
+          id="inquiryJob"
+          name="jobTitle"
+          placeholder="Your Job Title"
+        />
+        <label for="inquiryMessage">Your Message</label>
+        <textarea
+          id="inquiryMessage"
+          name="message"
+          placeholder="Your Message"
+          required
+        ></textarea>
+        <div
+          class="g-recaptcha"
+          data-sitekey="6LeIxAcTAAAAAJcZVRqyHh71UMIEGNQ_MXjiZKhI"
+        ></div>
+        <button type="submit">Submit Inquiry</button>
+      </form>
+    </section>
+
+    <section class="location-map">
+      <h2>Find Us Here</h2>
+      <iframe
+        src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3625.3371973651338!2d25.92450917433565!3d-24.680932703674046!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x1ebb5be8edcea723%3A0x5ca701921e24760e!2sBotswana%20Accountancy%20College!5e0!3m2!1sen!2sbw!4v1743886538286!5m2!1sen!2sbw"
+        loading="lazy"
+        allowfullscreen
+        referrerpolicy="no-referrer-when-downgrade"
+      ></iframe>
+    </section>
+
+    <div class="toast" id="toast">
+      🎉 Inquiry submitted successfully! We will reply through your email within
+      3 working days.
+    </div>
+
+    <footer>
+      <p>&copy; 2025 AI-SOLUTIONS. All Rights Reserved.</p>
+    </footer>
+
+    <!-- Scripts moved to bottom of body -->
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-database.js"></script>
+    <script src="https://www.google.com/recaptcha/api.js" async defer></script>
+    <script>
+      // Initialize Firebase
+      const firebaseConfig = {
+        apiKey: "AIzaSyAtjeL9bPG4jb3mIhjvBiJJoR1PhJgtx0I",
+        authDomain: "ai-solutions-981f1.firebaseapp.com",
+        databaseURL: "https://ai-solutions-981f1-default-rtdb.firebaseio.com",
+        projectId: "ai-solutions-981f1",
+        storageBucket: "ai-solutions-981f1.appspot.com",
+        messagingSenderId: "501089774980",
+        appId: "1:501089774980:web:0bfef808f9ba6ec04641d1",
+        measurementId: "G-K8C7956N0B",
+      };
+
+      firebase.initializeApp(firebaseConfig);
+      const db = firebase.database();
+
+      // Form handling
+      const form = document.getElementById("inquiryForm");
+      const toast = document.getElementById("toast");
+
+      if (form) {
+        form.addEventListener("submit", function (e) {
+          e.preventDefault();
+
+          // Verify reCAPTCHA
+          if (!grecaptcha.getResponse()) {
+            alert("Please complete the reCAPTCHA.");
+            return;
+          }
+
+          // Get form values
+          const name = document.getElementById("inquiryName").value.trim();
+          const email = document.getElementById("inquiryEmail").value.trim();
+          const company = document
+            .getElementById("inquiryCompany")
+            .value.trim();
+          const job = document.getElementById("inquiryJob").value.trim();
+          const message = document
+            .getElementById("inquiryMessage")
+            .value.trim();
+
+          // Validate required fields
+          if (!name || !email || !message) {
+            alert("Please fill in all required fields.");
+            return;
+          }
+
+          // Prepare data for Firebase
+          const inquiryData = {
+            name,
+            email,
+            company,
+            job,
+            message,
+            timestamp: firebase.database.ServerValue.TIMESTAMP,
+          };
+
+          // Submit to Firebase
+          db.ref("inquiries")
+            .push(inquiryData)
+            .then(() => {
+              // Reset form and show success message
+              form.reset();
+              grecaptcha.reset();
+              toast.style.display = "block";
+              setTimeout(() => {
+                toast.style.display = "none";
+              }, 4000);
+            })
+            .catch((error) => {
+              console.error("Error submitting inquiry:", error);
+              alert(
+                "There was an error submitting your inquiry. Please try again."
+              );
+            });
+        });
+      } else {
+        console.error("Contact form not found on page");
+      }
+    </script>
+  </body>
+</html>

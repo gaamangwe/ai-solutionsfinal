@@ -1,0 +1,978 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"
+    />
+    <title>AI-Solutions</title>
+    <link rel="stylesheet" href="/css/styles.css" />
+    <!-- Favicon -->
+    <link rel="icon" href="/images/favicon.ico" type="image/x-icon" />
+    <!-- Font Awesome for icons -->
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+    />
+    <style>
+      /* Base Styles */
+      body {
+        transition: background-color 0.5s, color 0.5s;
+        font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+        margin: 0;
+        padding: 0;
+        line-height: 1.6;
+      }
+
+      /* Dark mode styling */
+      body.dark-mode {
+        background-color: #121212;
+        color: white;
+      }
+
+      /* Theme Toggle */
+      .theme-toggle {
+        position: fixed;
+        top: 20px;
+        right: 20px;
+        background-color: #fff;
+        padding: 10px;
+        border-radius: 50%;
+        cursor: pointer;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        z-index: 1000;
+      }
+
+      .mobile-menu-toggle {
+        display: none;
+        background: none;
+        border: none;
+        font-size: 24px;
+        color: #007bff;
+        cursor: pointer;
+        padding: 10px;
+      }
+
+      /* Main Content */
+      main {
+        padding: 20px 5%;
+        max-width: 1200px;
+        margin: 0 auto;
+      }
+
+      h1,
+      h2 {
+        color: #007bff;
+      }
+
+      /* Slideshow */
+      .slideshow-container {
+        position: relative;
+        max-width: 1000px;
+        margin: 30px auto;
+      }
+
+      .slide {
+        display: none;
+      }
+
+      .slide-image {
+        width: 100%;
+        height: auto;
+        border-radius: 8px;
+      }
+
+      .text {
+        color: #fff;
+        background-color: rgba(0, 0, 0, 0.7);
+        padding: 15px;
+        border-radius: 8px;
+        position: absolute;
+        bottom: 20px;
+        left: 20px;
+        right: 20px;
+      }
+
+      /* Chatbot Styles */
+      #virtual-assistant {
+        position: fixed;
+        bottom: 20px;
+        right: 20px;
+        background-color: #007bff;
+        color: white;
+        border-radius: 30px;
+        width: auto;
+        height: 60px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        z-index: 1000;
+        transition: all 0.3s ease;
+        padding: 0 20px;
+        gap: 10px;
+      }
+
+      #virtual-assistant:hover {
+        transform: scale(1.05);
+        background-color: #0056b3;
+      }
+
+      #virtual-assistant-container {
+        position: fixed;
+        bottom: 90px;
+        right: 20px;
+        width: 350px;
+        height: 500px;
+        background-color: white;
+        border-radius: 15px;
+        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+        display: none;
+        flex-direction: column;
+        overflow: hidden;
+        z-index: 1000;
+      }
+
+      .chat-header {
+        background-color: #007bff;
+        color: white;
+        padding: 15px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        font-weight: bold;
+      }
+
+      .chat-area {
+        flex: 1;
+        padding: 15px;
+        overflow-y: auto;
+        background-color: #f5f5f5;
+      }
+
+      .chat-input-container {
+        display: flex;
+        padding: 10px;
+        background-color: white;
+        border-top: 1px solid #eee;
+      }
+
+      #user-input {
+        flex: 1;
+        padding: 12px;
+        border: 1px solid #ddd;
+        border-radius: 20px;
+        outline: none;
+        font-size: 14px;
+      }
+
+      #send-button {
+        margin-left: 10px;
+        padding: 10px;
+        background-color: #007bff;
+        color: white;
+        border: none;
+        border-radius: 50%;
+        cursor: pointer;
+        width: 40px;
+        height: 40px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        transition: background-color 0.2s;
+      }
+
+      #send-button:hover {
+        background-color: #0056b3;
+      }
+
+      .message {
+        margin-bottom: 15px;
+        max-width: 85%;
+        padding: 12px 16px;
+        border-radius: 18px;
+        line-height: 1.4;
+        position: relative;
+        font-size: 14px;
+      }
+
+      .user-message {
+        background-color: #007bff;
+        color: white;
+        margin-left: auto;
+        border-bottom-right-radius: 5px;
+      }
+
+      .assistant-message {
+        background-color: #e5e5ea;
+        color: black;
+        margin-right: auto;
+        border-bottom-left-radius: 5px;
+      }
+
+      /* Quick reply buttons */
+      .quick-replies {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 8px;
+        margin-top: 12px;
+      }
+
+      .quick-reply-btn {
+        background-color: #007bff;
+        color: white;
+        border: none;
+        border-radius: 15px;
+        padding: 8px 14px;
+        font-size: 13px;
+        cursor: pointer;
+        transition: all 0.2s;
+        min-width: 60px;
+        min-height: 36px;
+      }
+
+      .quick-reply-btn:hover {
+        background-color: #0056b3;
+        transform: translateY(-1px);
+      }
+
+      .quick-reply-btn:active {
+        transform: translateY(0);
+      }
+
+      .instruction {
+        font-size: 12px;
+        color: #666;
+        margin-top: 8px;
+        text-align: center;
+        font-style: italic;
+      }
+
+      /* Dark mode adjustments */
+      body.dark-mode #virtual-assistant-container {
+        background-color: #2d2d2d;
+        color: white;
+      }
+
+      body.dark-mode .chat-area {
+        background-color: #1e1e1e;
+      }
+
+      body.dark-mode .assistant-message {
+        background-color: #3d3d3d;
+        color: white;
+      }
+
+      body.dark-mode .chat-input-container {
+        background-color: #2d2d2d;
+        border-color: #444;
+      }
+
+      body.dark-mode #user-input {
+        background-color: #3d3d3d;
+        color: white;
+        border-color: #444;
+      }
+
+      body.dark-mode .quick-reply-btn {
+        background-color: #007bff;
+      }
+
+      body.dark-mode .quick-reply-btn:hover {
+        background-color: #0056b3;
+      }
+
+      body.dark-mode .instruction {
+        color: #aaa;
+      }
+
+      /* Mobile menu styles */
+      @media only screen and (max-width: 767px) {
+        header {
+          padding: 10px 5%;
+          flex-wrap: wrap;
+        }
+
+        .logo-container img {
+          max-width: 150px;
+        }
+
+        .mobile-menu-toggle {
+          display: block;
+        }
+
+        nav {
+          width: 100%;
+          max-height: 0;
+          overflow: hidden;
+          transition: max-height 0.3s ease-out;
+        }
+
+        nav.active {
+          max-height: 500px;
+        }
+
+        nav ul {
+          flex-direction: column;
+          padding: 10px 0;
+        }
+
+        nav ul li {
+          margin: 5px 0;
+          text-align: center;
+        }
+
+        nav ul li a {
+          display: block;
+          padding: 8px 0;
+        }
+
+        /* Main content adjustments */
+        main {
+          padding: 15px;
+        }
+
+        h1 {
+          font-size: 24px;
+          text-align: center;
+        }
+
+        /* Slideshow adjustments */
+        .slideshow-container {
+          width: 100%;
+        }
+
+        .text {
+          font-size: 14px;
+          padding: 10px;
+          bottom: 10px;
+          left: 10px;
+          right: 10px;
+        }
+
+        /* Chatbot adjustments */
+        #virtual-assistant-container {
+          width: 90%;
+          right: 5%;
+          height: 60vh;
+          bottom: 80px;
+        }
+
+        .chat-area {
+          padding: 10px;
+        }
+
+        .message {
+          max-width: 90%;
+          padding: 10px 12px;
+          font-size: 14px;
+        }
+
+        /* Theme toggle */
+        .theme-toggle {
+          top: 10px;
+          right: 10px;
+          padding: 8px;
+        }
+      }
+
+      /* Tablet Styles */
+      @media only screen and (min-width: 768px) and (max-width: 1023px) {
+        .slideshow-container {
+          width: 90%;
+        }
+
+        #virtual-assistant-container {
+          width: 400px;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <!-- Splash Screen -->
+    <div id="splash-screen">
+      <img
+        src="/images/AI-SOLUTIONS LOGO.png"
+        alt="AI-Solutions Logo"
+        id="splash-logo"
+      />
+    </div>
+
+    <!-- Theme Toggle -->
+    <div class="theme-toggle" id="theme-toggle">
+      <span>🌙</span>
+    </div>
+
+    <header>
+      <div class="logo-container">
+        <img src="/images/AI-SOLUTIONS LOGO.png" alt="AI-Solutions Logo" />
+      </div>
+      <button class="mobile-menu-toggle" id="mobile-menu-toggle">
+        <i class="fas fa-bars"></i>
+      </button>
+      <nav id="main-nav">
+        <ul>
+          <li><a href="index.html">Home</a></li>
+          <li><a href="about_us.html">About Us</a></li>
+          <li><a href="contact.html">Contact Us</a></li>
+          <li><a href="events.html">Events</a></li>
+          <li><a href="articles.html">Articles</a></li>
+          <li><a href="feedback.html">Customer Feedback</a></li>
+          <li><a href="login.html">Admin Login</a></li>
+        </ul>
+      </nav>
+    </header>
+
+    <main>
+      <h1>Welcome to AI-Solutions</h1>
+      <p>Enhancing digital employee experiences across industries.</p>
+
+      <!-- Slideshow Section -->
+      <section id="services">
+        <h2>Our Services</h2>
+        <div class="slideshow-container">
+          <!-- Slide 1: AI-Powered Business Automation -->
+          <div class="slide fade">
+            <img
+              src="/images/automation for business.png"
+              alt="AI Automation"
+              class="slide-image"
+            />
+            <div class="text">
+              Streamline your business with intelligent automation solutions
+              that enhance productivity and efficiency.
+            </div>
+          </div>
+
+          <!-- Slide 2: Predictive Analytics & Data Insights -->
+          <div class="slide fade">
+            <img
+              src="/images/predictive analytics.png"
+              alt="Predictive Analytics"
+              class="slide-image"
+            />
+            <div class="text">
+              Harness the power of data-driven insights to make smarter business
+              decisions and predict future trends.
+            </div>
+          </div>
+
+          <!-- Slide 3: Virtual Assistants -->
+          <div class="slide fade">
+            <img
+              src="/images/finalchatbot.png"
+              alt="Virtual Assistants"
+              class="slide-image"
+            />
+            <div class="text">
+              Enhance customer engagement with intelligent AI virtual assistants
+              that provide 24/7 support.
+            </div>
+          </div>
+
+          <!-- Slide 4: Custom AI Model Development -->
+          <div class="slide fade">
+            <img src="/images/custom.png" alt="Custom AI" class="slide-image" />
+            <div class="text">
+              Tailored AI models designed to fit your unique business needs,
+              from machine learning to deep learning applications.
+            </div>
+          </div>
+
+          <!-- Slide 5: Cloud-Based AI Solutions -->
+          <div class="slide fade">
+            <img src="/images/cloud.png" alt="Cloud AI" class="slide-image" />
+            <div class="text">
+              Leverage the cloud to scale your AI-powered applications securely
+              and efficiently.
+            </div>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <!-- Enhanced Virtual Assistant -->
+    <div id="virtual-assistant" title="AI Assistant">
+      <i class="fas fa-robot"></i>
+      <span class="chat-button-text">AI-SOLUTIONS BOT</span>
+    </div>
+
+    <div id="virtual-assistant-container">
+      <div class="chat-header">
+        <span>AI-SOLUTIONS Assistant</span>
+        <button id="close-chat"><i class="fas fa-times"></i></button>
+      </div>
+      <div class="chat-area" id="chat-area">
+        <div class="assistant-message">
+          <strong>Hello! I'm your AI assistant from AI-SOLUTIONS.</strong
+          ><br /><br />
+          You can click any button below or type your question. Here are some
+          common topics:
+          <div class="quick-replies" id="quick-replies-container">
+            <button class="quick-reply-btn" data-query="services">
+              Our Services
+            </button>
+            <button class="quick-reply-btn" data-query="pricing">
+              Pricing
+            </button>
+            <button class="quick-reply-btn" data-query="get started">
+              Get Started
+            </button>
+            <button class="quick-reply-btn" data-query="contact">
+              Contact Us
+            </button>
+            <button class="quick-reply-btn" data-query="other">
+              Other Questions
+            </button>
+          </div>
+          <div class="instruction">
+            Click a button above or type your question
+          </div>
+        </div>
+      </div>
+      <div class="chat-input-container">
+        <input
+          type="text"
+          id="user-input"
+          placeholder="Type your question here..."
+        />
+        <button id="send-button"><i class="fas fa-paper-plane"></i></button>
+      </div>
+    </div>
+
+    <script>
+      // Splash Screen Removal
+      window.addEventListener("load", function () {
+        setTimeout(function () {
+          document.getElementById("splash-screen").style.opacity = 0;
+          setTimeout(function () {
+            document.getElementById("splash-screen").style.display = "none";
+          }, 500);
+        }, 2000);
+      });
+
+      // Dark Mode Toggle
+      const themeToggle = document.getElementById("theme-toggle");
+      themeToggle.addEventListener("click", function () {
+        document.body.classList.toggle("dark-mode");
+
+        // Save preference to localStorage
+        const isDarkMode = document.body.classList.contains("dark-mode");
+        localStorage.setItem("darkMode", isDarkMode);
+
+        // Update toggle icon
+        themeToggle.innerHTML = isDarkMode
+          ? "<span>☀️</span>"
+          : "<span>🌙</span>";
+      });
+
+      // Check for saved dark mode preference
+      if (localStorage.getItem("darkMode") === "true") {
+        document.body.classList.add("dark-mode");
+        themeToggle.innerHTML = "<span>☀️</span>";
+      }
+
+      // Mobile Menu Toggle
+      const mobileMenuToggle = document.getElementById("mobile-menu-toggle");
+      const mainNav = document.getElementById("main-nav");
+
+      mobileMenuToggle.addEventListener("click", function () {
+        mainNav.classList.toggle("active");
+        this.classList.toggle("active");
+      });
+
+      // Slideshow Functionality
+      let slideIndex = 0;
+      showSlides();
+
+      function showSlides() {
+        const slides = document.getElementsByClassName("slide");
+        for (let i = 0; i < slides.length; i++) {
+          slides[i].style.display = "none";
+        }
+        slideIndex++;
+        if (slideIndex > slides.length) {
+          slideIndex = 1;
+        }
+        slides[slideIndex - 1].style.display = "block";
+        setTimeout(showSlides, 5000); // Change slide every 5 seconds
+      }
+
+      // Virtual Assistant Functionality
+      const virtualAssistant = document.getElementById("virtual-assistant");
+      const assistantContainer = document.getElementById(
+        "virtual-assistant-container"
+      );
+      const closeChatButton = document.getElementById("close-chat");
+      const sendButton = document.getElementById("send-button");
+      const userInput = document.getElementById("user-input");
+      const chatArea = document.getElementById("chat-area");
+      const quickRepliesContainer = document.getElementById(
+        "quick-replies-container"
+      );
+
+      // Knowledge base for AI responses
+      const knowledgeBase = {
+        services: {
+          response: `<strong>Our AI Services:</strong><br><br>
+                    <div style="margin-left: 10px;">
+                      • <u>Business Automation</u> - Streamline operations with AI<br>
+                      • <u>Predictive Analytics</u> - Data-driven insights<br>
+                      • <u>Virtual Assistants</u> - 24/7 AI customer support<br>
+                      • <u>Custom AI Models</u> - Tailored solutions<br>
+                      • <u>Cloud AI Solutions</u> - Scalable infrastructure<br>
+                    </div>
+                    <br>Which service would you like to know more about?`,
+          quickReplies: [
+            "Business Automation",
+            "Predictive Analytics",
+            "Virtual Assistants",
+            "Custom AI",
+            "Cloud Solutions",
+            "Back",
+          ],
+        },
+        "business automation": {
+          response: `<strong>Business Automation</strong><br><br>
+                    Our AI-powered automation helps you:<br>
+                    <div style="margin-left: 10px;">
+                      • Automate repetitive tasks<br>
+                      • Reduce operational costs<br>
+                      • Improve efficiency<br>
+                      • Scale operations easily<br>
+                    </div>
+                    <br>We automate processes in HR, finance, customer service, and more.`,
+          quickReplies: [
+            "How it works",
+            "Case Studies",
+            "Pricing",
+            "Get Demo",
+            "Back",
+          ],
+        },
+        "predictive analytics": {
+          response: `<strong>Predictive Analytics</strong><br><br>
+                    We provide:<br>
+                    <div style="margin-left: 10px;">
+                      • Advanced forecasting models<br>
+                      • Customer behavior analysis<br>
+                      • Risk assessment tools<br>
+                      • Real-time dashboards<br>
+                    </div>
+                    <br>Perfect for retail, finance, healthcare, and manufacturing.`,
+          quickReplies: [
+            "Examples",
+            "Integration",
+            "Pricing",
+            "Talk to Expert",
+            "Back",
+          ],
+        },
+        "virtual assistants": {
+          response: `<strong>Virtual Assistants</strong><br><br>
+                    Our AI assistants offer:<br>
+                    <div style="margin-left: 10px;">
+                      • 24/7 customer support<br>
+                      • Natural language processing<br>
+                      • Multi-language support<br>
+                      • Easy integration<br>
+                    </div>
+                    <br>I'm an example of our virtual assistant technology!`,
+          quickReplies: ["See Demo", "Pricing", "Implementation", "Back"],
+        },
+        "custom ai": {
+          response: `<strong>Custom AI Development</strong><br><br>
+                    We create:<br>
+                    <div style="margin-left: 10px;">
+                      • Tailored machine learning models<br>
+                      • Computer vision solutions<br>
+                      • NLP systems<br>
+                      • Complete AI solutions<br>
+                    </div>
+                    <br>Built specifically for your business needs.`,
+          quickReplies: [
+            "Process",
+            "Timeline",
+            "Cost Estimate",
+            "Case Studies",
+            "Back",
+          ],
+        },
+        "cloud solutions": {
+          response: `<strong>Cloud AI Solutions</strong><br><br>
+                    Our cloud services provide:<br>
+                    <div style="margin-left: 10px;">
+                      • Scalable AI infrastructure<br>
+                      • Secure data processing<br>
+                      • API access to AI models<br>
+                      • Hybrid deployment options<br>
+                    </div>
+                    <br>Available on AWS, Azure, and Google Cloud.`,
+          quickReplies: [
+            "Architecture",
+            "Security",
+            "Pricing",
+            "Get Started",
+            "Back",
+          ],
+        },
+        pricing: {
+          response: `<strong>Pricing Information</strong><br><br>
+                    Our pricing depends on:<br>
+                    <div style="margin-left: 10px;">
+                      • Service(s) selected<br>
+                      • Implementation scale<br>
+                      • Customization needs<br>
+                      • Support level required<br>
+                    </div>
+                    <br>Would you like a personalized quote?`,
+          quickReplies: [
+            "Yes, Contact Sales",
+            "Pricing Plans",
+            "Free Trial",
+            "Back",
+          ],
+        },
+        "get started": {
+          response: `<strong>Getting Started</strong><br><br>
+                    To begin with our services:<br>
+                    <div style="margin-left: 10px;">
+                      1. Contact our sales team<br>
+                      2. Schedule a consultation<br>
+                      3. Define your requirements<br>
+                      4. We'll propose a solution<br>
+                      5. Implementation begins<br>
+                    </div>
+                    <br>Would you like to contact us now?`,
+          quickReplies: ["Contact Sales", "Schedule Call", "Not Now", "Back"],
+        },
+        contact: {
+          response: `<strong>Contact Us</strong><br><br>
+                    Reach us through:<br>
+                    <div style="margin-left: 10px;">
+                      • Email: info@ai-solutions.com<br>
+                      • Phone: +1 (800) 555-AI-SOL<br>
+                      • Contact form on our website<br>
+                    </div>
+                    <br>Our support hours are 9am-5pm EST.`,
+          quickReplies: ["Open Contact Page", "Schedule Call", "Back"],
+        },
+        other: {
+          response:
+            "Please type your question below and I'll do my best to help you. You can ask about our services, pricing, implementation process, or anything else related to AI-SOLUTIONS.",
+          quickReplies: ["Our Services", "Pricing", "Get Started", "Back"],
+        },
+        default: {
+          response:
+            "I'm sorry, I didn't understand that. You can click the buttons below or try rephrasing your question.",
+          quickReplies: [
+            "Our Services",
+            "Pricing",
+            "Contact",
+            "Other Questions",
+          ],
+        },
+      };
+
+      // Toggle chat visibility
+      virtualAssistant.addEventListener("click", function () {
+        assistantContainer.style.display =
+          assistantContainer.style.display === "flex" ? "none" : "flex";
+        if (assistantContainer.style.display === "flex") {
+          userInput.focus();
+        }
+      });
+
+      closeChatButton.addEventListener("click", function () {
+        assistantContainer.style.display = "none";
+      });
+
+      // Add message to chat
+      function addMessageToChat(message, sender) {
+        const messageDiv = document.createElement("div");
+        messageDiv.className = `${sender}-message message`;
+
+        if (typeof message === "string") {
+          messageDiv.innerHTML = message;
+        } else {
+          messageDiv.textContent = message;
+        }
+
+        chatArea.appendChild(messageDiv);
+        chatArea.scrollTop = chatArea.scrollHeight;
+      }
+
+      // Show typing indicator
+      function showTypingIndicator() {
+        const typingDiv = document.createElement("div");
+        typingDiv.className = "typing-indicator";
+        typingDiv.id = "typing-indicator";
+        typingDiv.innerHTML = `
+          <div class="typing-dot"></div>
+          <div class="typing-dot"></div>
+          <div class="typing-dot"></div>
+        `;
+        chatArea.appendChild(typingDiv);
+        chatArea.scrollTop = chatArea.scrollHeight;
+      }
+
+      // Remove typing indicator
+      function removeTypingIndicator() {
+        const typingIndicator = document.getElementById("typing-indicator");
+        if (typingIndicator) {
+          typingIndicator.remove();
+        }
+      }
+
+      // Add quick reply buttons
+      function addQuickReplies(replies) {
+        const quickRepliesDiv = document.createElement("div");
+        quickRepliesDiv.className = "quick-replies";
+
+        replies.forEach((reply) => {
+          const button = document.createElement("button");
+          button.className = "quick-reply-btn";
+          button.textContent = reply;
+          button.dataset.query = reply.toLowerCase();
+          button.addEventListener("click", function () {
+            processQuickReply(this.dataset.query);
+          });
+          quickRepliesDiv.appendChild(button);
+        });
+
+        return quickRepliesDiv;
+      }
+
+      // Process quick reply button click
+      function processQuickReply(query) {
+        // Add the button text as a user message
+        addMessageToChat(
+          query.charAt(0).toUpperCase() + query.slice(1),
+          "user"
+        );
+
+        // Process the query
+        processQuery(query);
+      }
+
+      // Process user query
+      function processQuery(query) {
+        // Show typing indicator
+        showTypingIndicator();
+
+        // Simulate processing delay
+        setTimeout(() => {
+          // Remove typing indicator
+          removeTypingIndicator();
+
+          // Handle "back" command
+          if (query === "back") {
+            const welcomeResponse = knowledgeBase["services"];
+            const messageDiv = document.createElement("div");
+            messageDiv.className = "assistant-message message";
+            messageDiv.innerHTML =
+              "<strong>What would you like to know about?</strong>";
+            messageDiv.appendChild(
+              addQuickReplies(welcomeResponse.quickReplies)
+            );
+            chatArea.appendChild(messageDiv);
+            chatArea.scrollTop = chatArea.scrollHeight;
+            return;
+          }
+
+          // Find matching response
+          let responseData = knowledgeBase["default"];
+
+          // Check for matching topics
+          for (const [key, data] of Object.entries(knowledgeBase)) {
+            if (query.includes(key)) {
+              responseData = data;
+              break;
+            }
+          }
+
+          // Special case for greetings
+          if (
+            query.includes("hi") ||
+            query.includes("hello") ||
+            query.includes("hey")
+          ) {
+            responseData = {
+              response:
+                "<strong>Hello! Welcome to AI-SOLUTIONS.</strong><br><br>How can I assist you today?",
+              quickReplies: [
+                "Our Services",
+                "Pricing",
+                "Contact",
+                "Get Started",
+              ],
+            };
+          }
+
+          // Special case for thanks
+          if (query.includes("thank") || query.includes("thanks")) {
+            responseData = {
+              response:
+                "You're welcome! Is there anything else I can help you with?",
+              quickReplies: ["No, thanks", "More Help", "Contact", "Feedback"],
+            };
+          }
+
+          // Add assistant message to chat
+          const messageDiv = document.createElement("div");
+          messageDiv.className = "assistant-message message";
+          messageDiv.innerHTML = responseData.response;
+
+          // Add quick replies if available
+          if (responseData.quickReplies) {
+            messageDiv.appendChild(addQuickReplies(responseData.quickReplies));
+          }
+
+          // Add instruction for other questions
+          if (query === "other") {
+            const instructionDiv = document.createElement("div");
+            instructionDiv.className = "instruction";
+            instructionDiv.textContent = "Please type your question below";
+            messageDiv.appendChild(instructionDiv);
+          }
+
+          chatArea.appendChild(messageDiv);
+          chatArea.scrollTop = chatArea.scrollHeight;
+        }, 800);
+      }
+
+      // Send message function
+      function sendMessage() {
+        const message = userInput.value.trim();
+        if (!message) return;
+
+        // Add user message to chat
+        addMessageToChat(message, "user");
+        userInput.value = "";
+
+        // Process the message
+        processQuery(message.toLowerCase());
+      }
+
+      // Event listeners
+      sendButton.addEventListener("click", sendMessage);
+      userInput.addEventListener("keypress", function (e) {
+        if (e.key === "Enter") {
+          sendMessage();
+        }
+      });
+
+      // Initialize quick reply buttons
+      document.querySelectorAll(".quick-reply-btn").forEach((button) => {
+        button.addEventListener("click", function () {
+          processQuickReply(this.dataset.query);
+        });
+      });
+    </script>
+    <footer>
+      <p>&copy; 2025 AI Solutions | All rights reserved</p>
+    </footer>
+  </body>
+</html>
